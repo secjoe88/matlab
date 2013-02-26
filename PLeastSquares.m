@@ -9,10 +9,10 @@
 %          approximating polynomial
 %     n: The degree of the desired polynomial approximation
 % Outputs:
-%     This function has no outputs
+%     solutions: Struct containing the calculated coefficients of the
+%     polynomial approximation
 function solutions=PLeastSquares(x_i, y_i, a_i, n)
     eqs=cell(n+1, 1);
-    solutions=zeros(1, n+1);
     for i=1:n+1
         eqs{i}=buildEq(x_i,y_i,a_i,n,i);
     end
