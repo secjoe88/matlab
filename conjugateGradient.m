@@ -17,6 +17,7 @@
 %     This function has no outputs.
 %     *Note* Function prints out resulting approximation along with resulting
 %         residual vector.
+%	also, git test
 function conjugateGradient(n, A, b, C, x, max_iterations, tol)
     %Step 1: Establish initial residual; residual with preconditioning;
     %instantiate necessary variables
