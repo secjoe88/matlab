@@ -6,32 +6,20 @@
 %     option: String representing whether the method is to approximate a collection
 %             of data (with option='data') or a function (with
 %             option='function')
+%     arg1: PLeastSquares expects a function if option value is 'function'
+%       or x-values of data if option value is 'data'
+%     arg2: PLeastSquare expects an array representing the interval of
+%       approximation if option value is 'function' or y-values of data if
+%       option value is 'data'
 %     n: The degree of the desired polynomial approximation
-%     *Note*
-%       Function will ask for user input for data or function/interval
-%       depending on value of 'option' parameter.
-% Outputs:
+%Outputs:
 %     solutions: Struct containing the calculated coefficients of the
 %     polynomial approximation
-function solutions=PLeastSquares(option, n)
+function solutions=PLeastSquares(option, arg1, arg2, n)
     a_i=sym('a', [1 n+1]);
     eqs=cell(n+1, 1);
-    if strcmp(option,'data')==1 
-        x_i=input('Input x values: ');
-        y_i=input('Input y values: ');
-        for i=1:n+1
-            eqs{i}=buildEq(option, x_i, y_i, a_i, n, i);
-        end
-    elseif strcmp(option, 'function')==1
-        syms x;
-        func=input('Input function (as symbolic function of x): ');
-        interval=zeros(1,2);
-        interval(1)=input('Beginning of interval: ');
-        interval(2)=input('End of interval: ');
-        for i=1:n+1
-            eqs{i}=buildEq(option, func, interval, a_i, n, i);
-        end
-        
+    for i=1:n+1
+            eqs{i}=buildEq(option, arg1, arg2, a_i, n, i);
     end
     solutions=solve([eqs{1:length(eqs)}]);
 end
