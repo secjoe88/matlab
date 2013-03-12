@@ -11,7 +11,8 @@
 %     n: the number of unknowns in the system to be approximated
 %     tol: the tolerated error of the approximation
 %     max_iterations: the maximum alloted iterations for the algorithm to run
-%         before returning an approximation
+%         before returning an approximation. If '0', algorithm will run
+%         until approximation matches tolerance
 %     option: an integer parameter. if 0, it will calculate using the Jacobi
 %         method. if 1 it will calculate using the Gauss-Seidel method. if
 %         2 it will calculate using the SOR method.
@@ -23,7 +24,7 @@ function x=jacobiGaussSOR(A, b, x_0, n, tol, max_iterations, option)
     if (option==2)
         omega=input('Please input omega value');
     end
-    while(k<=max_iterations)
+    while(k<=max_iterations || ~max_iterations)
         %Step 3, set values of x approximation
         for i=1:n
             switch option
@@ -56,7 +57,7 @@ function x=jacobiGaussSOR(A, b, x_0, n, tol, max_iterations, option)
             x_0(i)=x(i);
         end
     end
-    if(k>=max_iterations)
+    if(k>=max_iterations && max_iterations)
         disp('Max iterations exceeded');
     end
 end
