@@ -11,7 +11,8 @@
 %     C: Preconditioning matrix
 %     x: Initial vector approximation.
 %         *Note* must be entered as a column vector
-%     max_iterations: Desired maximum iterations
+%     max_iterations: Desired maximum iterations, if 0 continue until
+%       tolerance is reached
 %     tol: Desired approximation tolerance
 % Outputs:
 %     This function has no outputs.
@@ -31,7 +32,7 @@ function conjugateGradient(n, A, b, C, x, max_iterations, tol)
     
     %Step 2-3: Begin iteration
     k=1;
-    while(k<=max_iterations)
+    while(k<=max_iterations || ~max_iterations)
         %Step 4: Check if initial value is within tolerance, if so return
         if(inf_norm(v, n)<=tol)
             disp(['Solution vector:[' num2str(transpose(x)) ']']);
