@@ -11,22 +11,25 @@
 %     f: ODE to approximate (as syms)
 %     y: particular solution to ODE
 % Outputs:
-%     Function has no outputs
+%     solution: Vector containing approximations at t_i's
 %     *Note* Function prints approximation and exact solution at subsequent
 %     values of t
 
 
-function euler(a,b,N, alpha, f, y)
+function solution=euler(a,b,N, alpha, f, y)
     h=(b-a)/N;
     t=a;
     w=alpha;
-    disp(['Approximation w_0=', num2str(alpha)]);
+    disp(['Approximation w_0 at t_0=', num2str(a), char(9), num2str(a) ]);
+    solution=alpha;
     
+    format long; 
     for i=1:N
         w=w+(h*eval(f(t,w)));
         t=a+(i*h);
         disp(['Approximation w_', int2str(i), ' at t_', int2str(i), '=',...
-            num2str(t),': ', num2str(w), ',', 9,9, 'exact y(t_', int2str(i), ...
+            num2str(t),': ', char(9), num2str(w), ';', 9,9, 'exact y(t_', int2str(i), ...
             ')= ', num2str(eval(y(t)))]);
+        solution=[solution w];
     end
 end

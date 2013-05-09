@@ -9,6 +9,7 @@
 % Outputs:
 %     x: Approximation to system solution
 function x=newtonSystems(func, init, tol, nMax)
+    %create syms to be used in functions
     syms x1 x2;
     %create inline expressions for F and Jacobian of F
     F=inline(func);
@@ -17,6 +18,7 @@ function x=newtonSystems(func, init, tol, nMax)
     %indicating such
     if nMax==0
         disp('Max iterations exceeded');
+        return;
     end
     
     %if the current approximation is a solution, return it; otherwise
