@@ -9,7 +9,7 @@
 %     f: Cell array of equations of system
 %     alphas: Vectors of initial values for equations
 % Outputs:
-%     This function has no outputs
+%     omegas: approximations to y, y' at values of t
 %     *Note*
 %         Function prints out values of eq1 and eq2 at various values of t and
 %         plots both equations as functions of t
@@ -50,13 +50,13 @@ function omegas=RK4systems(a, b, m, h, f, alphas)
         %store next calculated approximation
         omegas=double([omegas w]);
         %print selectively
-        if mod(t,1)==0
+        if mod(i,4)==0 || i==1
             disp(['i=',int2str(i), '@time=', num2str(t), ': y(t)=', num2str(omegas(1, i)),...
                 char(9), char(9), 'y''(t)=', num2str(omegas(2, i))]);
         end
         t=t+h;
     end
     
-    plot([0:100], omegas(1, 1:(1/h):length(omegas(1, :))),...
-        [0:100], omegas(2,1:(1/h):length(omegas(2,:))));
+%     plot([0:100], omegas(1, 1:(1/h):length(omegas(1, :))),...
+%         [0:100], omegas(2,1:(1/h):length(omegas(2,:))));
 end
