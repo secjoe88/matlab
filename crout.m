@@ -42,12 +42,12 @@ function x=crout(a, b, c, s, n)
     end
     
     %Step 6 (also displays L and U matrices
-    disp('L=');
-    disp(num2str(diag(l)+diag(b,-1)));
-    disp('U=');
-    disp(num2str(eye(n)+diag(u, 1)));
-    for i=1:(n-1)
-        fprintf(['x_' num2str(i) '=' num2str(x(i)) ', ']);
-    end
-    disp(['x_' num2str(n) '=' num2str(x(n))]);
+%     disp('L=');
+%     disp(num2str(diag(l)+diag(b,-1)));
+%     disp('U=');
+%     disp(num2str(eye(n)+diag(u, 1)));
+%     for i=1:(n-1)
+%         fprintf(['x_' num2str(i) '=' num2str(x(i)) ', ']);
+%     end
+%     disp(['x_' num2str(n) '=' num2str(x(n))]);
 end
