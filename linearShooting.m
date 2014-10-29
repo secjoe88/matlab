@@ -9,7 +9,7 @@
 %     alpha: Beginning boundary conditions
 %     beta: End boundary condition
 %     n: number of subintervals
-%     f: Function list as 2x2 cell array. 
+%     f: Function list as 2x2 cell array of functions f(t,y1,y2). 
 %     
 %         Function list is formatted with f_1i being the first system used 
 %         by the linear shooting method derived by rewriting the original second order DE 
@@ -17,6 +17,7 @@
 %         and f_2i being the second system used by the linear shooting method 
 %         derived by removing the r(t) term and rewriting the second order
 %         DE as a system of 2 first order DE's.
+%    exactsol: symfun of exact solution for error calculation (optional)
 %         
 % Outputs:
 %     omegas: Approximations omega(1, i) to y(t) and omega(2, i) to y'(t) for
@@ -25,7 +26,7 @@
 %     Function also prints out select values of Runge Kutta evaluations, select
 %     values of calculated approximation to second order DE.
 
-function linearShooting(a, b, alpha, beta, n, f, exactsol)
+function omega=linearShooting(a, b, alpha, beta, n, f, exactsol)
     %set initial value for h
     h=(b-a)/n;
     

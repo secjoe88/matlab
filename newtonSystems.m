@@ -1,42 +1,57 @@
 % Joey Willhite
 % Description:
-%     A function to solve nonlinear systems using the Newton method in 2 dimensions
-% Inputs:
-%     func: System of equations expresed as a vector of symbolic expressions
-%     init: Initial approximation as a column vector
-%     tol: Tolerance
-%     nMax: Max iterations (input -1 to iterate indefinitely)
-% Outputs:
-%     x: Approximation to system solution
-function x=newtonSystems(func, init, tol, nMax)
-    %create syms to be used in functions
-    syms x1 x2;
-    %create inline expressions for F and Jacobian of F
-    F=inline(func);
-    J=inline(jacobian(func));
-    %check if max iterations are exceeded, if so return a message
-    %indicating such
-    if nMax==0
-        disp('Max iterations exceeded');
-        return;
+%     a function to approximate the solution to a nonlinear system of equations
+%     using newton's method.
+% Inputs: 
+%     functions:  a (column)cell array of functions to solve (as symfunc)
+%     init:       an (row)array of initial values
+%     n:          number of functions/unknowns to solve for
+%     terminator: terminating case. if terminator>1 it will be treated as an 
+%                 iteration. if terminator<1 it will be treated as a tolerance
+% Output:
+%     solutions:  Sequence of approximations converging to solution
+
+function solutions = newtonSystems(functions, init, n, terminator)
+    %%terminating condition (for iterative terminator)
+    if terminator==0
+        solutions=init
+        return
+    end
+    %evaluate our functions at our initial guesses init
+    Fx=zeros(n,1);
+    for i=1:n
+        Fx(i)=subs(functions{i},symvar([functions{:}]), init);
     end
     
-    %if the current approximation is a solution, return it; otherwise
-    %calculate the next iteration
-    if F(init(1), init(2))==0
-        x=init;
-        return;
-    else
-        y=linsolve(J(init(1), init(2)), -F(init(1), init(2)));
-        next=init+y;
+    %%check if initial guess is indeed a solution.
+    if Fx==0
+        solutions=init
+        return
     end
     
-    %if the next iteration is within tolerance, return it. otherwise,
-    %recurse
-    if(norm((next-init), Inf)<=tol)
-        x=next;
-        return;
+    %calculate the jacobian, and evaluate it at our initial guess
+    Jacobian=jacobian(functions, symvar([functions{:}]));
+
+    %and evaluate it at our initial guess as well
+    Jacobian=double(subs(Jacobian, symvar([functions{:}]), init));
+
+    %solve the linear system J(x)y=-F(x), and create our next approximatoin
+    y=double(Jacobian\(-Fx));
+    next=init+transpose(y);
+    
+    
+    %if the terminating mechanism is a tolerance
+    if terminator<1
+        %return if approximation is within tolerance
+        if norm(transpose(y))<terminator
+            solutions=next;
+            return
+        end
+        %otherwise recurse with same tolerance
+        solutions=[next; newtonSystems(functions, next, n, terminator)];
     else
-        newtonSystems(func, next, tol, nMax-1)
+        %if terminating case is iterative, we recurse
+        solutions=[next;newtonSystems(functions, next, n, terminator-1)];
     end
-end
+
+    
